@@ -1,7 +1,7 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
+// import * as basicLightbox from "basiclightbox";
 
-// console.log(galleryItems);
 const gallery = document.querySelector(".gallery");
 const listGallery = galleryItems.map(
   ({ preview, original, description }) => `<div class="gallery__item">
@@ -10,11 +10,48 @@ const listGallery = galleryItems.map(
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
-      alt="${description}"
+      alt="${description}"      
     />
   </a>
 </div>`
 );
-// console.log(listGallery);
+
 gallery.innerHTML = listGallery.join(" ");
-console.log(gallery);
+
+gallery.addEventListener("click", onTagClick);
+function onTagClick(evt) {
+  if (evt.target.nodeName !== "IMG") {
+    return;
+  }
+  evt.preventDefault();
+  const largeImg = evt.target.dataset.source;
+
+  const instance = basicLightbox.create(`
+      <img src="${largeImg}" width="800" height="600">
+  `);
+
+  instance.show();
+
+  // Реалізація закриитя модалки по ESC через "once"
+
+  document.addEventListener(
+    "keydown",
+    (evt) => {
+      if (evt.code === "Escape" && instance.visible()) {
+        instance.close();
+        console.log(1);
+      }
+    },
+
+    { once: true }
+  );
+  // Реалізація закриитя модалки по ESC через "логічний оператор &&"
+
+  // document.addEventListener("keydown", (evt) => {
+  //   if (evt.code === "Escape" && instance.visible()) {
+  //     instance.close();
+  //   } else {
+  //     document.removeEventListener("keydown", evt);
+  //   }
+  // });
+}
