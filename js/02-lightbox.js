@@ -7,12 +7,14 @@ const listGallery = galleryItems.map(
   <a class="gallery__item" class="gallery__link" href="${original}">
     <img
       class="gallery__image"
-      src="${preview}"
-      
+      src="${preview}"      
       alt="${description}"      
     />
-  </a>
+  </a>  
 </li>`
 );
 gallery.innerHTML = listGallery.join(" ");
-console.log(gallery);
+var lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+});
